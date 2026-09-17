@@ -1,116 +1,283 @@
 package view;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class CadastroPacientes extends JFrame {
+
+    private JPanel contentPane;
 
     private JTextField txtNome;
     private JTextField txtCpf;
     private JTextField txtTelefone;
     private JTextField txtDataNascimento;
 
-    private JButton btnSalvar;
+    private JTable tabela;
+    private DefaultTableModel modeloTabela;
+
+    private JButton btnCadastrar;
     private JButton btnLimpar;
-    private JButton btnSair;
 
     public CadastroPacientes() {
 
         setTitle("Sistema Odontológico - Cadastro de Pacientes");
-        setSize(500, 350);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setBounds(100, 100, 600, 330);
 
-        JPanel painel = new JPanel();
-        painel.setLayout(new GridLayout(5, 2, 10, 10));
-        painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        contentPane = new JPanel();
+        setContentPane(contentPane);
+
+        JPanel painelDados = new JPanel();
+
+        painelDados.setBorder(
+                new TitledBorder(null,
+                        "Dados do paciente",
+                        TitledBorder.LEADING,
+                        TitledBorder.TOP,
+                        null,
+                        null)
+        );
 
         JLabel lblNome = new JLabel("Nome:");
         JLabel lblCpf = new JLabel("CPF:");
         JLabel lblTelefone = new JLabel("Telefone:");
-        JLabel lblData = new JLabel("Data de Nascimento:");
+        JLabel lblDataNascimento =
+                new JLabel("Data de Nascimento:");
 
         txtNome = new JTextField();
         txtCpf = new JTextField();
         txtTelefone = new JTextField();
         txtDataNascimento = new JTextField();
 
-        btnSalvar = new JButton("Salvar");
+        btnCadastrar = new JButton("Cadastrar");
         btnLimpar = new JButton("Limpar");
-        btnSair = new JButton("Sair");
 
-        painel.add(lblNome);
-        painel.add(txtNome);
+        javax.swing.GroupLayout gl_painelDados =
+                new javax.swing.GroupLayout(painelDados);
 
-        painel.add(lblCpf);
-        painel.add(txtCpf);
+        painelDados.setLayout(gl_painelDados);
 
-        painel.add(lblTelefone);
-        painel.add(txtTelefone);
+        gl_painelDados.setHorizontalGroup(
+                gl_painelDados.createParallelGroup(
+                        javax.swing.GroupLayout.Alignment.LEADING
+                )
+                .addGroup(
+                        gl_painelDados.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(
+                                gl_painelDados.createParallelGroup(
+                                        javax.swing.GroupLayout.Alignment.LEADING
+                                )
+                                .addComponent(lblNome)
+                                .addComponent(lblCpf)
+                                .addComponent(lblTelefone)
+                                .addComponent(lblDataNascimento)
+                        )
+                        .addGap(18)
+                        .addGroup(
+                                gl_painelDados.createParallelGroup(
+                                        javax.swing.GroupLayout.Alignment.LEADING
+                                )
+                                .addComponent(txtNome)
+                                .addComponent(txtCpf)
+                                .addComponent(txtTelefone)
+                                .addComponent(txtDataNascimento)
+                                .addGroup(
+                                        javax.swing.GroupLayout.Alignment.TRAILING,
+                                        gl_painelDados.createSequentialGroup()
+                                        .addComponent(btnCadastrar)
+                                        .addPreferredGap(
+                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED
+                                        )
+                                        .addComponent(btnLimpar)
+                                )
+                        )
+                        .addContainerGap()
+                )
+        );
 
-        painel.add(lblData);
-        painel.add(txtDataNascimento);
+        gl_painelDados.setVerticalGroup(
+                gl_painelDados.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(
+                        gl_painelDados.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.BASELINE
+                        )
+                        .addComponent(lblNome)
+                        .addComponent(txtNome,
+                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                )
+                .addPreferredGap(
+                        javax.swing.LayoutStyle.ComponentPlacement.RELATED
+                )
+                .addGroup(
+                        gl_painelDados.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.BASELINE
+                        )
+                        .addComponent(lblCpf)
+                        .addComponent(txtCpf,
+                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                )
+                .addPreferredGap(
+                        javax.swing.LayoutStyle.ComponentPlacement.RELATED
+                )
+                .addGroup(
+                        gl_painelDados.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.BASELINE
+                        )
+                        .addComponent(lblTelefone)
+                        .addComponent(txtTelefone,
+                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                )
+                .addPreferredGap(
+                        javax.swing.LayoutStyle.ComponentPlacement.RELATED
+                )
+                .addGroup(
+                        gl_painelDados.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.BASELINE
+                        )
+                        .addComponent(lblDataNascimento)
+                        .addComponent(txtDataNascimento,
+                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                )
+                .addPreferredGap(
+                        javax.swing.LayoutStyle.ComponentPlacement.RELATED
+                )
+                .addGroup(
+                        gl_painelDados.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.BASELINE
+                        )
+                        .addComponent(btnLimpar)
+                        .addComponent(btnCadastrar)
+                )
+                .addContainerGap()
+        );
 
-        JPanel painelBotoes = new JPanel();
-        painelBotoes.add(btnSalvar);
-        painelBotoes.add(btnLimpar);
-        painelBotoes.add(btnSair);
+        modeloTabela = new DefaultTableModel(
+                new Object[][] {},
+                new String[] {
+                        "Nome",
+                        "CPF",
+                        "Telefone",
+                        "Data de Nascimento"
+                }
+        );
 
-        add(painel, BorderLayout.CENTER);
-        add(painelBotoes, BorderLayout.SOUTH);
+        tabela = new JTable(modeloTabela);
 
-        // Botão Salvar
-        btnSalvar.addActionListener(e -> salvarPaciente());
+        JScrollPane scrollPane = new JScrollPane(tabela);
 
-        // Botão Limpar
+        javax.swing.GroupLayout gl_contentPane =
+                new javax.swing.GroupLayout(contentPane);
+
+        contentPane.setLayout(gl_contentPane);
+
+        gl_contentPane.setHorizontalGroup(
+                gl_contentPane.createParallelGroup(
+                        javax.swing.GroupLayout.Alignment.LEADING
+                )
+                .addComponent(painelDados,
+                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                        Short.MAX_VALUE)
+                .addComponent(scrollPane,
+                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                        580,
+                        Short.MAX_VALUE)
+        );
+
+        gl_contentPane.setVerticalGroup(
+                gl_contentPane.createSequentialGroup()
+                .addComponent(painelDados,
+                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(
+                        javax.swing.LayoutStyle.ComponentPlacement.RELATED
+                )
+                .addComponent(scrollPane,
+                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                        150,
+                        Short.MAX_VALUE)
+        );
+
+        btnCadastrar.addActionListener(e -> cadastrarPaciente());
+
         btnLimpar.addActionListener(e -> limparCampos());
-
-        // Botão Sair
-        btnSair.addActionListener(e -> dispose());
     }
 
-    private void salvarPaciente() {
+    private void cadastrarPaciente() {
 
-        String nome = txtNome.getText();
-        String cpf = txtCpf.getText();
-        String telefone = txtTelefone.getText();
-        String dataNascimento = txtDataNascimento.getText();
+        String nome = txtNome.getText().trim();
+        String cpf = txtCpf.getText().trim();
+        String telefone = txtTelefone.getText().trim();
+        String dataNascimento =
+                txtDataNascimento.getText().trim();
 
         if (nome.isEmpty()) {
-            JOptionPane.showMessageDialog(
+            javax.swing.JOptionPane.showMessageDialog(
                     this,
-                    "Digite o nome do paciente!",
-                    "Aviso",
-                    JOptionPane.WARNING_MESSAGE
+                    "Digite o nome do paciente!"
             );
             return;
         }
 
-        JOptionPane.showMessageDialog(
-                this,
-                "Paciente cadastrado com sucesso!\n\n"
-                + "Nome: " + nome
-                + "\nCPF: " + cpf
-                + "\nTelefone: " + telefone
-                + "\nData de nascimento: " + dataNascimento
-        );
+        if (cpf.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Digite o CPF do paciente!"
+            );
+            return;
+        }
+
+        if (telefone.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Digite o telefone do paciente!"
+            );
+            return;
+        }
+
+        if (dataNascimento.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Digite a data de nascimento!"
+            );
+            return;
+        }
+
+        modeloTabela.addRow(new Object[] {
+                nome,
+                cpf,
+                telefone,
+                dataNascimento
+        });
 
         limparCampos();
     }
 
     private void limparCampos() {
+
         txtNome.setText("");
         txtCpf.setText("");
         txtTelefone.setText("");
         txtDataNascimento.setText("");
+
         txtNome.requestFocus();
-    }
-
-    public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(() -> {
-            CadastroPacientes tela = new CadastroPacientes();
-            tela.setVisible(true);
-        });
     }
 }
