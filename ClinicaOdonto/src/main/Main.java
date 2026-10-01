@@ -3,15 +3,18 @@ package main;
 import javax.swing.SwingUtilities;
 
 import view.CadastroPacientes;
+import view.MenuPrincipal;
 
 public class Main {
 	public static void main(String[] args) {
 
-        SwingUtilities.invokeLater(() -> {
+		java.awt.EventQueue.invokeLater(
+                () -> {
 
-            CadastroPacientes tela = new CadastroPacientes();
+                	MenuPrincipal menu =
+                            new MenuPrincipal();
 
-            tela.setVisible(true);
+                	menu.setVisible(true);
         });
     }
 }
