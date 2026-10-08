@@ -2,6 +2,7 @@ package model;
 
 public class Paciente {
 
+    private int id;
     private String nome;
     private String cpf;
     private String telefone;
@@ -12,6 +13,19 @@ public class Paciente {
         this.cpf = cpf;
         this.telefone = telefone;
         this.dataNascimento = dataNascimento;
+    }
+
+    public Paciente(int id, String nome, String cpf, String telefone, String dataNascimento) {
+        this(nome, cpf, telefone, dataNascimento);
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -44,5 +58,11 @@ public class Paciente {
 
     public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
+    }
+
+    // Texto exibido nas caixas de seleção
+    @Override
+    public String toString() {
+        return nome;
     }
 }

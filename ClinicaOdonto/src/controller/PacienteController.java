@@ -1,23 +1,28 @@
 package controller;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 
+import dao.PacienteDAO;
 import model.Paciente;
 
 public class PacienteController {
 
-    private List<Paciente> pacientes;
+    private PacienteDAO pacienteDAO;
 
     public PacienteController() {
-        pacientes = new ArrayList<>();
+        pacienteDAO = new PacienteDAO();
     }
 
-    public void cadastrarPaciente(Paciente paciente) {
-        pacientes.add(paciente);
+    public void cadastrarPaciente(Paciente paciente) throws SQLException {
+        pacienteDAO.inserir(paciente);
     }
 
-    public List<Paciente> listarPacientes() {
-        return pacientes;
+    public List<Paciente> listarPacientes() throws SQLException {
+        return pacienteDAO.listar();
+    }
+
+    public void excluirPaciente(int id) throws SQLException {
+        pacienteDAO.excluir(id);
     }
 }

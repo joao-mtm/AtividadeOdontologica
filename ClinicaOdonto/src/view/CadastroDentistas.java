@@ -7,10 +7,6 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.format.ResolverStyle;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -24,19 +20,17 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import controller.PacienteController;
-import model.Paciente;
+import controller.DentistaController;
+import model.Dentista;
 
-public class CadastroPacientes extends JFrame {
+public class CadastroDentistas extends JFrame {
 
     private JPanel contentPane;
 
-    private PacienteController pacienteController = new PacienteController();
+    private DentistaController dentistaController = new DentistaController();
 
     private JTextField txtNome;
-    private JFormattedTextField txtCpf;
-    private JFormattedTextField txtTelefone;
-    private JFormattedTextField txtDataNascimento;
+    private JFormattedTextField txtCro;
 
     private JTable tabela;
     private DefaultTableModel modeloTabela;
@@ -45,9 +39,9 @@ public class CadastroPacientes extends JFrame {
     private JButton btnLimpar;
     private JButton btnExcluir;
 
-    public CadastroPacientes() {
+    public CadastroDentistas() {
 
-        setTitle("OdontoCare - Cadastro de Pacientes");
+        setTitle("OdontoCare - Cadastro de Dentistas");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
@@ -60,8 +54,8 @@ public class CadastroPacientes extends JFrame {
         setContentPane(contentPane);
 
         JPanel painelLateral = Tema.criarPainelLateral(
-                "Cadastro de<br>pacientes",
-                "Consulte e mantenha os dados dos pacientes."
+                "Cadastro de<br>dentistas",
+                "Gerencie a equipe da clínica."
         );
         contentPane.add(painelLateral);
 
@@ -88,13 +82,13 @@ public class CadastroPacientes extends JFrame {
         });
         painelLateral.add(lblVoltar);
 
-        JLabel lblSecao = new JLabel("PACIENTES");
+        JLabel lblSecao = new JLabel("DENTISTAS");
         lblSecao.setFont(Tema.espacada(new Font(Tema.FONTE, Font.PLAIN, 13), 0.08f));
         lblSecao.setForeground(Tema.TEXTO_SECUNDARIO);
         lblSecao.setBounds(408, 33, 400, 22);
         contentPane.add(lblSecao);
 
-        JLabel lblTitulo = new JLabel("Novo paciente");
+        JLabel lblTitulo = new JLabel("Novo dentista");
         lblTitulo.setFont(new Font(Tema.FONTE, Font.BOLD, 38));
         lblTitulo.setForeground(Tema.TEXTO_ESCURO);
         lblTitulo.setBounds(406, 55, 660, 56);
@@ -105,32 +99,26 @@ public class CadastroPacientes extends JFrame {
         lblSubtitulo.setForeground(Tema.TEXTO_SECUNDARIO);
         lblSubtitulo.setBounds(408, 112, 600, 28);
         contentPane.add(lblSubtitulo);
-        
+
         JPanel painelDados = new JPanel();
         painelDados.setLayout(null);
         painelDados.setBackground(Tema.CARD_CLARO);
-        painelDados.setBounds(408, 156, 654, 196);
+        painelDados.setBounds(408, 156, 654, 134);
         contentPane.add(painelDados);
 
-        // Campo normal
         txtNome = new JTextField();
-
-        // Campos com máscara
-        txtCpf = Tema.criarCampoComMascara("###.###.###-##");
-        txtTelefone = Tema.criarCampoComMascara("(##) #####-####");
-        txtDataNascimento = Tema.criarCampoComMascara("##/##/####");
+        // CRO-UF seguido do número (ex.: CRO-SC 12345)
+        txtCro = Tema.criarCampoComMascara("CRO-UU #####");
 
         Tema.adicionarCampo(painelDados, "Nome", txtNome, 24, 16);
-        Tema.adicionarCampo(painelDados, "CPF", txtCpf, 339, 16);
-        Tema.adicionarCampo(painelDados, "Telefone", txtTelefone, 24, 82);
-        Tema.adicionarCampo(painelDados, "Data de nascimento", txtDataNascimento, 339, 82);
+        Tema.adicionarCampo(painelDados, "CRO", txtCro, 339, 16);
 
         btnLimpar = Tema.criarBotao("Limpar", false);
-        btnLimpar.setBounds(400, 144, 110, 36);
+        btnLimpar.setBounds(400, 82, 110, 36);
         painelDados.add(btnLimpar);
 
         btnCadastrar = Tema.criarBotao("Cadastrar", true);
-        btnCadastrar.setBounds(520, 144, 110, 36);
+        btnCadastrar.setBounds(520, 82, 110, 36);
         painelDados.add(btnCadastrar);
 
         modeloTabela = new DefaultTableModel(
@@ -138,9 +126,7 @@ public class CadastroPacientes extends JFrame {
                 new String[] {
                         "ID",
                         "Nome",
-                        "CPF",
-                        "Telefone",
-                        "Data de Nascimento"
+                        "CRO"
                 }
         ) {
             @Override
@@ -158,7 +144,7 @@ public class CadastroPacientes extends JFrame {
         JScrollPane scrollPane = new JScrollPane(tabela);
         scrollPane.setBorder(BorderFactory.createLineBorder(Tema.BORDA));
         scrollPane.getViewport().setBackground(Color.WHITE);
-        scrollPane.setBounds(408, 368, 654, 180);
+        scrollPane.setBounds(408, 306, 654, 242);
         contentPane.add(scrollPane);
 
         btnExcluir = Tema.criarBotao("Excluir", false);
@@ -166,18 +152,17 @@ public class CadastroPacientes extends JFrame {
         contentPane.add(btnExcluir);
 
         // Eventos dos botões
-        btnCadastrar.addActionListener(e -> cadastrarPaciente());
+        btnCadastrar.addActionListener(e -> cadastrarDentista());
 
         btnLimpar.addActionListener(e -> limparCampos());
 
-        btnExcluir.addActionListener(e -> excluirPaciente());
+        btnExcluir.addActionListener(e -> excluirDentista());
 
-        carregarPacientes();
+        carregarDentistas();
 
         pack();
         setLocationRelativeTo(null);
     }
-
 
     private void voltarAoMenu() {
 
@@ -190,140 +175,88 @@ public class CadastroPacientes extends JFrame {
         dispose();
     }
 
-    private void cadastrarPaciente() {
+    private void cadastrarDentista() {
 
         String nome =
                 txtNome.getText().trim();
 
-        String cpf =
-                txtCpf.getText().trim();
-
-        String telefone =
-                txtTelefone.getText().trim();
-
-        String dataNascimento =
-                txtDataNascimento.getText().trim();
+        String cro =
+                txtCro.getText().trim();
 
         // Verifica o nome
         if (nome.isEmpty()) {
 
             JOptionPane.showMessageDialog(
                     this,
-                    "Digite o nome do paciente!"
+                    "Digite o nome do dentista!"
             );
 
             txtNome.requestFocus();
             return;
         }
 
-        // Verifica se o CPF está completo
-        if (cpf.contains("_")) {
+        // Verifica se o CRO está completo
+        if (cro.contains("_")) {
 
             JOptionPane.showMessageDialog(
                     this,
-                    "Digite o CPF completo!"
+                    "Digite o CRO completo!"
             );
 
-            txtCpf.requestFocus();
+            txtCro.requestFocus();
             return;
         }
 
-        // Verifica se o telefone está completo
-        if (telefone.contains("_")) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Digite o telefone completo!"
-            );
-
-            txtTelefone.requestFocus();
-            return;
-        }
-
-        // Verifica se a data está completa
-        if (dataNascimento.contains("_")) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Digite a data de nascimento completa!"
-            );
-
-            txtDataNascimento.requestFocus();
-            return;
-        }
-
-        // Verifica se a data existe (ex.: 31/02 não é válida)
-        try {
-
-            LocalDate.parse(
-                    dataNascimento,
-                    DateTimeFormatter.ofPattern("dd/MM/uuuu")
-                            .withResolverStyle(ResolverStyle.STRICT)
-            );
-
-        } catch (DateTimeParseException e) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Data de nascimento inválida!"
-            );
-
-            txtDataNascimento.requestFocus();
-            return;
-        }
-
-        Paciente paciente =
-                new Paciente(nome, cpf, telefone, dataNascimento);
+        Dentista dentista =
+                new Dentista(nome, cro);
 
         try {
 
-            pacienteController.cadastrarPaciente(paciente);
+            dentistaController.cadastrarDentista(dentista);
 
         } catch (SQLException e) {
 
-            mostrarErroBanco("cadastrar o paciente", e);
+            mostrarErroBanco("cadastrar o dentista", e);
             return;
         }
 
-        adicionarNaTabela(paciente);
+        adicionarNaTabela(dentista);
 
         JOptionPane.showMessageDialog(
                 this,
-                "Paciente cadastrado com sucesso!"
+                "Dentista cadastrado com sucesso!"
         );
         limparCampos();
     }
 
-    private void carregarPacientes() {
+    private void carregarDentistas() {
 
         modeloTabela.setRowCount(0);
 
         try {
 
-            for (Paciente paciente : pacienteController.listarPacientes()) {
-                adicionarNaTabela(paciente);
+            for (Dentista dentista : dentistaController.listarDentistas()) {
+                adicionarNaTabela(dentista);
             }
 
         } catch (SQLException e) {
 
-            mostrarErroBanco("carregar os pacientes", e);
+            mostrarErroBanco("carregar os dentistas", e);
         }
     }
 
-    private void adicionarNaTabela(Paciente paciente) {
+    private void adicionarNaTabela(Dentista dentista) {
 
         modeloTabela.addRow(
                 new Object[] {
-                        paciente.getId(),
-                        paciente.getNome(),
-                        paciente.getCpf(),
-                        paciente.getTelefone(),
-                        paciente.getDataNascimento()
+                        dentista.getId(),
+                        dentista.getNome(),
+                        dentista.getCro()
                 }
         );
     }
 
-    private void excluirPaciente() {
+    private void excluirDentista() {
 
         int linhaSelecionada = tabela.getSelectedRow();
 
@@ -331,7 +264,7 @@ public class CadastroPacientes extends JFrame {
 
             JOptionPane.showMessageDialog(
                     this,
-                    "Selecione um paciente na tabela para excluir!"
+                    "Selecione um dentista na tabela para excluir!"
             );
             return;
         }
@@ -343,8 +276,8 @@ public class CadastroPacientes extends JFrame {
 
         int resposta = JOptionPane.showConfirmDialog(
                 this,
-                "Deseja realmente excluir o paciente " + nome + "?",
-                "Excluir paciente",
+                "Deseja realmente excluir o dentista " + nome + "?",
+                "Excluir dentista",
                 JOptionPane.YES_NO_OPTION
         );
 
@@ -354,11 +287,11 @@ public class CadastroPacientes extends JFrame {
 
         try {
 
-            pacienteController.excluirPaciente(id);
+            dentistaController.excluirDentista(id);
 
         } catch (SQLException e) {
 
-            mostrarErroBanco("excluir o paciente", e);
+            mostrarErroBanco("excluir o dentista", e);
             return;
         }
 
@@ -366,7 +299,7 @@ public class CadastroPacientes extends JFrame {
 
         JOptionPane.showMessageDialog(
                 this,
-                "Paciente excluído com sucesso!"
+                "Dentista excluído com sucesso!"
         );
     }
 
@@ -384,11 +317,7 @@ public class CadastroPacientes extends JFrame {
 
         txtNome.setText("");
 
-        txtCpf.setValue(null);
-
-        txtTelefone.setValue(null);
-
-        txtDataNascimento.setValue(null);
+        txtCro.setValue(null);
 
         txtNome.requestFocus();
     }

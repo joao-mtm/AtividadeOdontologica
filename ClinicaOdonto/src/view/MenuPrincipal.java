@@ -122,9 +122,9 @@ public class MenuPrincipal extends JFrame {
         cardTratamentos.setBounds(742, 366, 320, 116);
         contentPane.add(cardTratamentos);
 
-        aoClicar(cardConsultas, () -> mensagemEmDesenvolvimento("Consultas"));
+        aoClicar(cardConsultas, this::abrirConsultas);
         aoClicar(cardPacientes, this::abrirPacientes);
-        aoClicar(cardDentistas, () -> mensagemEmDesenvolvimento("Dentistas"));
+        aoClicar(cardDentistas, this::abrirDentistas);
         aoClicar(cardTratamentos, () -> mensagemEmDesenvolvimento("Tratamentos"));
 
         pack();
@@ -200,6 +200,30 @@ public class MenuPrincipal extends JFrame {
 
         CadastroPacientes tela =
                 new CadastroPacientes();
+
+        tela.setLocationRelativeTo(this);
+
+        tela.setVisible(true);
+
+        this.setVisible(false);
+    }
+
+    private void abrirConsultas() {
+
+        AgendamentoConsultas tela =
+                new AgendamentoConsultas();
+
+        tela.setLocationRelativeTo(this);
+
+        tela.setVisible(true);
+
+        this.setVisible(false);
+    }
+
+    private void abrirDentistas() {
+
+        CadastroDentistas tela =
+                new CadastroDentistas();
 
         tela.setLocationRelativeTo(this);
 

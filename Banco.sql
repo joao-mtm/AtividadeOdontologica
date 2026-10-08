@@ -1,5 +1,5 @@
-create database clinica
-use clinica
+create database clinica;
+use clinica;
 CREATE TABLE pacientes (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
